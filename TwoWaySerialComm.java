@@ -136,6 +136,7 @@ public class TwoWaySerialComm {
     System.out.println("[USING] buffer size: " + bufferSize);
 
 
+    // TODO: Potentially not necessary to set it explicitly with System.setProperty
     // Set SerialPorts property for gnu.io.rxtx
     System.setProperty("gnu.io.rxtx.SerialPorts", serialPort);
     try {
