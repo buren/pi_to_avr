@@ -85,7 +85,7 @@ public class TwoWaySerialComm {
 
   public static void main( String[] args ) {
     try {
-      ( new TwoWaySerialComm() ).connect( "/dev/ttyUSB0" );
+      ( new TwoWaySerialComm() ).connect( "/dev/tty/USB0" );
     } catch( Exception e ) {
       e.printStackTrace();
     }
