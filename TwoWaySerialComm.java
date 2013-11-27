@@ -95,7 +95,7 @@ public class TwoWaySerialComm {
 
   public static void main( String[] args ) {
     // Defaults
-    String serial = "/dev/tty/USB0";
+    String serialPort = "/dev/tty/ttyAMA0";
     int baudRate = 57600;
     int bufferSize = 1024;
 
@@ -122,20 +122,23 @@ public class TwoWaySerialComm {
             }
             break;
           case 2:
-            serial = args[2];
-            System.out.println("[ARGUMENT] port: " + serial);
+            serialPort = args[2];
+            System.out.println("[ARGUMENT] port: " + serialPort);
             break;
 
         }
     }
 
-    System.out.println("[USING] port:        " + serial);
+    System.out.println("[USING] port:        " + serialPort);
     System.out.println("[USING] baud rate:   " + baudRate);
     System.out.println("[USING] buffer size: " + bufferSize);
 
+
+    // Set SerialPorts property for gnu.io.rxtx
+    System.setProperty("gnu.io.rxtx.SerialPorts", serialPort);
     try {
-      System.out.println("\n\n[CONNECT]: serial=" + serial + ", baudRate=" + baudRate + ", bufferSize=" + bufferSize);
-      ( new TwoWaySerialComm() ).connect( serial, baudRate, bufferSize);
+      System.out.println("\n\n[CONNECT]: serial=" + serialPort + ", baudRate=" + baudRate + ", bufferSize=" + bufferSize);
+      ( new TwoWaySerialComm() ).connect( serialPort, baudRate, bufferSize);
     } catch( Exception e ) {
       e.printStackTrace();
     }
