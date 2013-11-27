@@ -65,6 +65,7 @@ public class TwoWaySerialComm {
       int len = -1;
       try {
         while( ( len = this.in.read( buffer ) ) > -1 ) {
+          // TODO: Implement
           System.out.println("[OUTPUT]=" + new String( buffer, 0, len ));
         }
       } catch( IOException e ) {
@@ -85,6 +86,7 @@ public class TwoWaySerialComm {
       try {
         int c = 0;
         while( ( c = System.in.read() ) > -1 ) {
+          // TODO: Implement
           this.out.write( c );
         }
       } catch( IOException e ) {
