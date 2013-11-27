@@ -99,41 +99,42 @@ public class TwoWaySerialComm {
     int baudRate = 57600;
     int bufferSize = 1024;
 
-    if ( args.length > 0 ) {
-      serial = args[0];
-      System.out.println("[USING] port: " + serial);
+    for (int i = 0; i < args.length; i++) {
+        switch (i) {
+          case 0:
+            try {
+              baudRate = Integer.parseInt(args[1]);
+              System.out.println("[ARGUMENT] baud rate: " + baudRate);
+            } catch (NumberFormatException e) {
+              System.out.println("[ERROR] Baud rate must be an integer. Was: '" + args[1] + "'");
+              System.out.println("[SYSTEM EXIT]");
+              System.exit(0);
+            }
+            break;
+          case 1:
+            try {
+              bufferSize = Integer.parseInt(args[2]);
+              System.out.println("[ARGUMENT] buffer size: " + bufferSize);
+            } catch (NumberFormatException e) {
+              System.out.println("[ERROR] Buffer size must be an integer. Was: '" + args[2] + "'");
+              System.out.println("[SYSTEM EXIT]");
+              System.exit(0);
+            }
+            break;
+          case 2:
+            serial = args[0];
+            System.out.println("[ARGUMENT] port: " + serial);
+            break;
 
-      if ( args.length > 1 ) {
-
-        try {
-          baudRate = Integer.parseInt(args[1]);
-          System.out.println("[USING] baud rate: " + baudRate);
-        } catch (NumberFormatException e) {
-          System.out.println("[ERROR] Baud rate must be an integer. Was: '" + args[1] + "'");
-          System.exit(0);
         }
-
-        if ( args.length > 2 ) {
-          try {
-            bufferSize = Integer.parseInt(args[2]);
-            System.out.println("[USING] buffer size: " + bufferSize);
-          } catch (NumberFormatException e) {
-            System.out.println("[ERROR] Buffer size must be an integer. Was: '" + args[2] + "'");
-            System.exit(0);
-          }
-        }
-
-      } else {
-        System.out.println("[USING] default port: " + serial);
-      }
-
-    } else {
-      System.out.println("[USING] default port: " + serial);
-      System.out.println("[USING] default baud rate: " + baudRate);
-      System.out.println("[USING] default buffer size: " + bufferSize);
     }
+
+    System.out.println("[USING] port:        " + serial);
+    System.out.println("[USING] baud rate:   " + baudRate);
+    System.out.println("[USING] buffer size: " + bufferSize);
+
     try {
-      System.out.println("\n\n[CONNECT]: serial=" + serial + ", baudRate=" + baudRate);
+      System.out.println("\n\n[CONNECT]: serial=" + serial + ", baudRate=" + baudRate + ", bufferSize=" + bufferSize);
       ( new TwoWaySerialComm() ).connect( serial, baudRate, bufferSize);
     } catch( Exception e ) {
       e.printStackTrace();
