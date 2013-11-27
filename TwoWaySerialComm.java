@@ -130,6 +130,7 @@ public class TwoWaySerialComm {
     } else {
       System.out.println("[USING] default port: " + serial);
       System.out.println("[USING] default baud rate: " + baudRate);
+      System.out.println("[USING] default buffer size: " + bufferSize);
     }
     try {
       System.out.println("\n\n[CONNECT]: serial=" + serial + ", baudRate=" + baudRate);
