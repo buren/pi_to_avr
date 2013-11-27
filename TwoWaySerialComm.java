@@ -12,32 +12,39 @@ import gnu.io.SerialPort;
 // Compile and run with:
 // $ javac -cp /usr/share/java/RXTXcomm.jar:. TwoWaySerialComm.java
 // $ java -Djava.library.path=/usr/lib/jni -cp /usr/share/java/RXTXcomm.jar:. TwoWaySerialComm
+// or with optional main arguemnts
+// $ java -Djava.library.path=/usr/lib/jni -cp /usr/share/java/RXTXcomm.jar:. TwoWaySerialComm "/dev/tty/USB0" baudRate bufferSize # (baudRate and bufferSize musts be ints)
 public class TwoWaySerialComm {
 
-  void connect( String portName ) throws Exception {
+  void connect( String portName, int baudRate, int bufferSize ) throws Exception {
     CommPortIdentifier portIdentifier = CommPortIdentifier
         .getPortIdentifier( portName );
     if( portIdentifier.isCurrentlyOwned() ) {
-      System.out.println( "Error: Port is currently in use" );
+      System.out.println( "[ERROR] Port '" + portName + "' is currently in use" );
     } else {
       int timeout = 2000;
       CommPort commPort = portIdentifier.open( this.getClass().getName(), timeout );
 
       if( commPort instanceof SerialPort ) {
         SerialPort serialPort = ( SerialPort ) commPort;
-        serialPort.setSerialPortParams( 57600,
+        System.out.println( "[SET] Serial port params" );
+        serialPort.setSerialPortParams( baudRate,
                                         SerialPort.DATABITS_8,
                                         SerialPort.STOPBITS_1,
                                         SerialPort.PARITY_NONE );
 
+        System.out.println( "[GET] Input stream" );
+        System.out.println( "[GET] Output stream" );
         InputStream in = serialPort.getInputStream();
         OutputStream out = serialPort.getOutputStream();
 
-        ( new Thread( new SerialReader( in ) ) ).start();
+        System.out.println( "[START] Serial reader" );
+        System.out.println( "[START] Serial writer" );
+        ( new Thread( new SerialReader( in, bufferSize ) ) ).start();
         ( new Thread( new SerialWriter( out ) ) ).start();
 
       } else {
-        System.out.println( "Error: Only serial ports are handled by this example." );
+        System.out.println( "[ERROR] Only serial ports are implemented" );
       }
     }
   }
@@ -45,17 +52,20 @@ public class TwoWaySerialComm {
   public static class SerialReader implements Runnable {
 
     InputStream in;
+    int bufferSize;
 
-    public SerialReader( InputStream in ) {
+    public SerialReader( InputStream in, int bufferSize ) {
       this.in = in;
+      this.bufferSize = bufferSize;
     }
 
     public void run() {
-      byte[] buffer = new byte[ 1024 ];
+      // TODO: Find an appropriate buffer size
+      byte[] buffer = new byte[ this.bufferSize ];
       int len = -1;
       try {
         while( ( len = this.in.read( buffer ) ) > -1 ) {
-          System.out.print( new String( buffer, 0, len ) );
+          System.out.println("[OUTPUT] " + new String( buffer, 0, len ));
         }
       } catch( IOException e ) {
         e.printStackTrace();
@@ -84,8 +94,46 @@ public class TwoWaySerialComm {
   }
 
   public static void main( String[] args ) {
+    // Defaults
+    String serial = "/dev/tty/USB0";
+    int baudRate = 57600;
+    int bufferSize = 1024;
+
+    if ( args.length > 0 ) {
+      serial = args[0];
+      System.out.println("[USING] port: " + serial);
+
+      if ( args.length > 1 ) {
+
+        try {
+          baudRate = Integer.parseInt(args[1]);
+          System.out.println("[USING] baud rate: " + baudRate);
+        } catch (NumberFormatException e) {
+          System.out.println("[ERROR] Baud rate must be an integer. Was: '" + args[1] + "'");
+          System.exit(0);
+        }
+
+        if ( args.length > 2 ) {
+          try {
+            bufferSize = Integer.parseInt(args[2]);
+            System.out.println("[USING] buffer size: " + bufferSize);
+          } catch (NumberFormatException e) {
+            System.out.println("[ERROR] Buffer size must be an integer. Was: '" + args[2] + "'");
+            System.exit(0);
+          }
+        }
+
+      } else {
+        System.out.println("[USING] default port: " + serial);
+      }
+
+    } else {
+      System.out.println("[USING] default port: " + serial);
+      System.out.println("[USING] default baud rate: " + baudRate);
+    }
     try {
-      ( new TwoWaySerialComm() ).connect( "/dev/tty/USB0" );
+      System.out.println("\n\n[CONNECT]: serial=" + serial + ", baudRate=" + baudRate);
+      ( new TwoWaySerialComm() ).connect( serial, baudRate, bufferSize);
     } catch( Exception e ) {
       e.printStackTrace();
     }
