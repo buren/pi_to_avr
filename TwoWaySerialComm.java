@@ -65,7 +65,7 @@ public class TwoWaySerialComm {
       int len = -1;
       try {
         while( ( len = this.in.read( buffer ) ) > -1 ) {
-          System.out.println("[OUTPUT] " + new String( buffer, 0, len ));
+          System.out.println("[OUTPUT]=" + new String( buffer, 0, len ));
         }
       } catch( IOException e ) {
         e.printStackTrace();
@@ -103,7 +103,7 @@ public class TwoWaySerialComm {
         switch (i) {
           case 0:
             try {
-              baudRate = Integer.parseInt(args[1]);
+              baudRate = Integer.parseInt(args[0]);
               System.out.println("[ARGUMENT] baud rate: " + baudRate);
             } catch (NumberFormatException e) {
               System.out.println("[ERROR] Baud rate must be an integer. Was: '" + args[1] + "'");
@@ -113,7 +113,7 @@ public class TwoWaySerialComm {
             break;
           case 1:
             try {
-              bufferSize = Integer.parseInt(args[2]);
+              bufferSize = Integer.parseInt(args[1]);
               System.out.println("[ARGUMENT] buffer size: " + bufferSize);
             } catch (NumberFormatException e) {
               System.out.println("[ERROR] Buffer size must be an integer. Was: '" + args[2] + "'");
@@ -122,7 +122,7 @@ public class TwoWaySerialComm {
             }
             break;
           case 2:
-            serial = args[0];
+            serial = args[2];
             System.out.println("[ARGUMENT] port: " + serial);
             break;
 
