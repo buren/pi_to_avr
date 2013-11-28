@@ -97,7 +97,7 @@ public class TwoWaySerialComm {
 
   public static void main( String[] args ) {
     // Defaults
-    String serialPort = "/dev/tty/ttyAMA0";
+    String serialPort = "/dev/tty/ttyUSB0";
     int baudRate = 57600;
     int bufferSize = 1024;
 
