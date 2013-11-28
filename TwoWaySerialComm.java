@@ -60,13 +60,12 @@ public class TwoWaySerialComm {
     }
 
     public void run() {
-      // TODO: Find an appropriate buffer size
       byte[] buffer = new byte[ this.bufferSize ];
       int len = -1;
       try {
         while( ( len = this.in.read( buffer ) ) > -1 ) {
           // TODO: Implement
-          System.out.println("[OUTPUT]=" + new String( buffer, 0, len ));
+          System.out.println("[OUTPUT]='" + new String( buffer, 0, len ) + "'");
         }
       } catch( IOException e ) {
         e.printStackTrace();
@@ -99,7 +98,7 @@ public class TwoWaySerialComm {
     // Defaults
     String serialPort = "/dev/tty/ttyUSB0";
     int baudRate = 57600;
-    int bufferSize = 1024;
+    int bufferSize = 1024; // TODO: Find an appropriate buffer size
 
     for (int i = 0; i < args.length; i++) {
         switch (i) {
