@@ -65,6 +65,12 @@ public class TwoWaySerialComm {
       try {
         while( ( len = this.in.read( buffer ) ) > -1 ) {
           // TODO: Implement
+          /* TODO: Outputs everything that is printed to terminal
+                   i.e if you write "HEJ" and press ENTER output will be:
+                    [OUTPUT]='H'
+                    [OUTPUT]='EJ
+                    '
+          */
           System.out.println("[OUTPUT]='" + new String( buffer, 0, len ) + "'");
         }
       } catch( IOException e ) {
