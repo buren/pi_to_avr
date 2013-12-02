@@ -1,1 +1,0 @@
-SUBSYSTEM=="tty", ATTRS{idProduct}=="1506", ATTRS{idVendor}=="12d1", RUN+="/home/pi/rtsp/misc/dongle/connect.sh"
