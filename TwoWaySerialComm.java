@@ -13,7 +13,7 @@ import gnu.io.SerialPort;
 // $ javac -cp /usr/share/java/RXTXcomm.jar:. TwoWaySerialComm.java
 // $ java -Djava.library.path=/usr/lib/jni -cp /usr/share/java/RXTXcomm.jar:. TwoWaySerialComm
 // or with optional main arguemnts
-// $ java -Djava.library.path=/usr/lib/jni -cp /usr/share/java/RXTXcomm.jar:. TwoWaySerialComm "/dev/tty/USB0" baudRate bufferSize # (baudRate and bufferSize musts be ints)
+// $ java -Djava.library.path=/usr/lib/jni -cp /usr/share/java/RXTXcomm.jar:. TwoWaySerialComm "/dev/ttyUSB0" baudRate bufferSize # (baudRate and bufferSize musts be ints)
 public class TwoWaySerialComm {
 
   void connect( String portName, int baudRate, int bufferSize ) throws Exception {
@@ -102,15 +102,15 @@ public class TwoWaySerialComm {
 
   public static void main( String[] args ) {
     // Defaults
-    String serialPort = "/dev/ttyUSB0";
-    int baudRate = 57600;
+    String serialPort = "/dev/ttyUSB1";
+    int baudRate = 38400;
     int bufferSize = 1024; // TODO: Find an appropriate buffer size
 
     for (int i = 0; i < args.length; i++) {
         switch (i) {
           case 0:
             try {
-              baudRate = Integer.parseInt(args[0]);
+              baudRate = Integer.parseInt(args[1]);
               System.out.println("[ARGUMENT] baud rate: " + baudRate);
             } catch (NumberFormatException e) {
               System.out.println("[ERROR] Baud rate must be an integer. Was: '" + args[1] + "'");
@@ -120,7 +120,7 @@ public class TwoWaySerialComm {
             break;
           case 1:
             try {
-              bufferSize = Integer.parseInt(args[1]);
+              bufferSize = Integer.parseInt(args[2]);
               System.out.println("[ARGUMENT] buffer size: " + bufferSize);
             } catch (NumberFormatException e) {
               System.out.println("[ERROR] Buffer size must be an integer. Was: '" + args[2] + "'");
@@ -129,7 +129,7 @@ public class TwoWaySerialComm {
             }
             break;
           case 2:
-            serialPort = args[2];
+            serialPort = args[0];
             System.out.println("[ARGUMENT] port: " + serialPort);
             break;
 

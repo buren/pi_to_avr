@@ -9,7 +9,7 @@
 
 or with optional main arguemnts
 
-    $ java -Djava.library.path=/usr/lib/jni -cp /usr/share/java/RXTXcomm.jar:. TwoWaySerialComm "/dev/tty/USB0" baudRate bufferSize # (baudRate and bufferSize musts be ints)
+    $ java -Djava.library.path=/usr/lib/jni -cp /usr/share/java/RXTXcomm.jar:. TwoWaySerialComm "/dev/ttyUSB0" baudRate bufferSize # (baudRate and bufferSize musts be ints)
 
 #### Find serial ports on Raspberry
     dmesg | grep tty
